@@ -176,6 +176,9 @@ Route::group(['middleware'=>['auth']],function(){
         Route::resource('local-suppliers', 'LocalSupplierController');
         Route::get('payable-suppliers', 'LocalSupplierController@payableSuppliers')->name('payable-suppliers');
         Route::get('payment-form/{id}', 'LocalSupplierController@paymentForm')->name('payment-form');
+        Route::post('payment-store', 'LocalSupplierController@paymentStore')->name('payment-store');
+        Route::get('payments-report/{start_date?}/{end_date?}', 'LocalSupplierController@paymentsReport')->name('payments-report');
+        Route::get('payment-due-report', 'LocalSupplierController@paymentDueReport')->name('payment-due-report');
         
         // truck
         //Route::resource('truck', 'TruckController');

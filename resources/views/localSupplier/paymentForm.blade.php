@@ -22,7 +22,7 @@
           <h3 class="box-title"> <i class="fa fa-plus-circle"></i> Local Supplier Payment Form</h3>
         </div>
         <!-- /.box-header -->
-        {!! Form::open(array('route' =>['local-suppliers.store'],'method'=>'POST')) !!}
+        {!! Form::open(array('route' =>['payment-store'],'method'=>'POST')) !!}
         <div class="box-body">
           <div class="row">
             <div class="col-md-12">
@@ -36,6 +36,8 @@
               </h5>
             </div>
             <input type="hidden" value="{{$payableSupplier->due}}" id="due">
+            <input type="hidden" name="local_supplier_id" value="{{$payableSupplier->id}}">
+            <input type="hidden" name="supplier_name" value="{{$payableSupplier->name}}">
             <div class="col-md-12">
               <div class="form-group"> 
                 <label>Enter Amount <span style="color:red">*</span></label>
@@ -45,7 +47,7 @@
             <div class="col-md-12">
               <div class="form-group"> 
                 <label>Payment Method <span style="color:red">*</span></label>
-                <select class="form-control Type select2" name="bank_id" required=""> 
+                <select class="form-control Type select2" name="bank_account_id" required=""> 
                   <option value="">Select account</option>
                   @foreach($bankAccounts as $bankAccount)
                   <option value="{{$bankAccount->id}}">{{$bankAccount->bank_name}}</option>
@@ -62,7 +64,7 @@
             <div class="col-md-12">
               <div class="form-group"> 
                 <label>Note</label>
-                <input type="number" name="note" class="form-control" value="" placeholder="short description" autocomplete="off">
+                <input type="text" name="note" class="form-control" value="" placeholder="short description" autocomplete="off">
               </div>
             </div>
           </div>
@@ -78,4 +80,16 @@
   </div>
 </section>
 <!-- /.content -->
+<script>
+  $(document).ready(function () {
+    $('#amount').keyup(function (e) { 
+      var amount = parseFloat($(this).val());
+      var due = parseFloat($('#due').val());
+      if (amount > due) {
+        alert('Value is greater than due amount !');
+        $(this).val(0);
+      }
+    });
+  });
+</script>
 @endsection 

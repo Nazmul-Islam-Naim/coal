@@ -17,6 +17,8 @@ class CreateLocalSupplierLedgersTable extends Migration
             $table->bigIncrements('id');  
             $table->unsignedBigInteger('local_supplier_id');
             $table->foreign('local_supplier_id')->references('id')->on('local_suppliers')->onDelete('cascade');
+            $table->integer('bank_account_id')->nullable();
+            $table->foreign('bank_account_id')->references('id')->on('bank_account')->onDelete('cascade');
             $table->date('date');
             $table->string('reason',100);
             $table->decimal('amount', 15,2)->default(0)->nullable();

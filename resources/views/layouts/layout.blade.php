@@ -319,11 +319,15 @@ input[type=number] {
         
         <li class="treeview {{(
           $url==config('app.supplier').'/local-suppliers' ||
-          $baseUrl.'/'.config('app.supplier').'/payable-suppliers'
+          $baseUrl.'/'.config('app.supplier').'/payable-suppliers' ||
+          $baseUrl.'/'.config('app.supplier').'/payments-report' ||
+          $baseUrl.'/'.config('app.supplier').'/payment-due-report'
         ) ? 'active':''}}"> <a href="#"> <i class="fa fa-user-o"></i> <span>Local Purchase</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
             <li class="{{($url==config('app.supplier').'/local-suppliers')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/local-suppliers'}}"><i class="fa fa-angle-double-right"></i>Local Suppliers</a></li>
             <li class="{{($url==config('app.supplier').'/payable-suppliers')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/payable-suppliers'}}"><i class="fa fa-angle-double-right"></i>Payable Suppliers</a></li>
+            <li class="{{($url==config('app.supplier').'/payments-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/payments-report'}}"><i class="fa fa-angle-double-right"></i>Payments Report</a></li>
+            <li class="{{($url==config('app.supplier').'/payment-due-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/payment-due-report'}}"><i class="fa fa-angle-double-right"></i>Payment Due Report</a></li>
           </ul>
         </li>
         

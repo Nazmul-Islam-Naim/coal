@@ -18,4 +18,5 @@ class LocalSupplier extends Model
     public function ledger(){
         return $this->hasMany(LocalSupplierLedger::class);
     }
+
 }
