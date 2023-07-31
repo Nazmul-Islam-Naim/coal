@@ -94,6 +94,10 @@
                             echo number_format($data->amount,2);
                             $sum = $sum+$data->amount;
                             $credit = $credit+$data->amount;
+                          }elseif(preg_match("/Purchase/", $reasons)) {
+                            echo number_format($data->amount,2);
+                            $sum = $sum+$data->amount;
+                            $credit = $credit+$data->amount;
                           }
                         ?>
                       </td>

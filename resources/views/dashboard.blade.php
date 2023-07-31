@@ -2,6 +2,18 @@
 @section('title', 'Dashboard')
 @section('content')
 <!-- Content Header (Page header) -->
+<style>
+.custom{
+  color: black;
+  display: flex;
+  border: 1px solid aliceblue;
+  border-radius: 2px;
+}
+.small-box:hover {
+  text-decoration: none;
+  color: #4abef4;
+}
+</style>
 <?php
   $baseUrl = URL::to('/');
 ?>
@@ -25,130 +37,185 @@
 <!-- Main content -->
 <section class="content">
   <div class="row">
-      <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-body">
-                    <center><h2>Coal Management</h2></center>
-      <center><u><h3>Quick Links</h3></u></center>   
-      <div class="row">
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <a href="{{$baseUrl.'/'.config('app.sell').'/product-sell'}}" style="color: #ffffff">
-              <div class="small-box bg-aqua">
-                <div class="inner">
-                  <h3 style="font-size: 20px;"></h3>
-                  <p><center><b>Sell Product </b></center></p>
-                </div>
-              </div>
-              </a>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <a href="{{$baseUrl.'/'.config('app.purchase').'/product-purchase'}}" style="color: #ffffff">
-              <div class="small-box bg-red">
-                <div class="inner">
-                  <h3 style="font-size: 20px;"></h3>
-                  <p><center><b>Purchase Product </b></center></p>
-                </div>
-              </div>
-              </a>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" style="color: #ffffff">
-              <div class="small-box bg-green">
-                <div class="inner">
-                  <h3 style="font-size: 20px;"></h3>
-                  <p><center><b>Bill Collection </b></center></p>
-                </div>
-              </div>
-              </a>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <a href="{{$baseUrl.'/'.config('app.supplier').'/product-supplier-payment'}}" style="color: #ffffff">
-              <div class="small-box bg-yellow">
-                <div class="inner">
-                  <h3 style="font-size: 20px;"></h3>
-                  <p><center><b>Supplier Payment </b></center></p>
-                </div>
-              </div>
-              </a>
-            </div>
+    <div class="col-md-12">
+      <div class="box box-primary">
+        <div class="box-body">
+          <label for="Quick Links">Quick Links:</label>
+          <a href="{{route('product-sell.index')}}" target="_blank" class="badge badge-pill btn-primary">Sell Product</a>
+          <a href="{{route('lc.create')}}" target="_blank" class="badge badge-pill btn-secondary">Create LC</a>
+          <a href="{{route('local-purchases.create')}}" target="_blank" class="badge badge-pill btn-success">Local Purchase</a>
+          <a href="{{route('distribute-to-branch.index')}}" target="_blank" class="badge badge-pill btn-light">Distribute to Branch</a>
+          <a href="{{route('branch-stock.index')}}" target="_blank" class="badge badge-pill btn-danger">Branch Stock</a>
+          <a href="{{route('chalan.create')}}" target="_blank" class="badge badge-pill btn-warning">Create Chalan</a>
+          <a href="{{route('daily-transaction.index')}}" target="_blank" class="badge badge-pill btn-light">Daily Transaction</a>
+          <a href="{{route('payable-suppliers')}}" target="_blank" class="badge badge-pill btn-info">Local Supplier</a>
         </div>
-      <center><u><h3>Reports</h3></u></center>   
-      <div class="row">
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <a href="{{$baseUrl.'/'.config('app.bm').'/branches'}}" style="color: #ffffff">
-               <?php
-                    $ttlBranch = DB::table('branchs')->count();
-               ?>
-              <div class="small-box bg-aqua">
-                <div class="inner">
-                  <h3 style="font-size: 20px;"></h3>
-                  <p><center><b>Total Branch </b><br><span style="font-size: 25px">{{$ttlBranch}}</span></center></p>
-                </div>
-              </div>
-              </a>
-            </div>
-            
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <a href="{{$baseUrl.'/'.config('app.customer').'/customer'}}" style="color: #ffffff">
-                <?php
-                    $ttlCustomer = DB::table('customer')->count();
-               ?>
-              <div class="small-box bg-red">
-                <div class="inner">
-                  <h3 style="font-size: 20px;"></h3>
-                  <p><center><b>Total Customer </b><br><span style="font-size: 25px">{{$ttlCustomer}}</span></center></p>
-                </div>
-              </div>
-              </a>
-            </div>
-            
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <a href="{{$baseUrl.'/'.config('app.sm').'/stock-product'}}" style="color: #ffffff">
-               <?php
-                    $ttlMainStock = DB::table('stock_product')->where('branch_id', '0')->sum('quantity');
-               ?>
-              <div class="small-box bg-green">
-                <div class="inner">
-                  <h3 style="font-size: 20px;"></h3>
-                  <p><center><b>Main Stock </b><br><span style="font-size: 25px">{{$ttlMainStock}}</span></center></p>
-                </div>
-              </div>
-              </a>
-            </div>
-            
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <a href="{{$baseUrl.'/'.config('app.sm').'/branch-stock'}}" style="color: #ffffff">
-               <?php
-                    $ttlBranchStock = DB::table('stock_product')->where('branch_id', '!=', '0')->sum('quantity');
-               ?>
-              <div class="small-box bg-yellow">
-                <div class="inner">
-                  <h3 style="font-size: 20px;"></h3>
-                  <p><center><b>Branch Stock </b><br><span style="font-size: 25px">{{$ttlBranchStock}}</span></center></p>
-                </div>
-              </div>
-              </a>
-            </div>
-            
-            <div class="col-md-3 col-sm-6 col-xs-12">
-              <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" style="color: #ffffff">
-               <?php
-                    $ttlBill = DB::table('customer_ledger')->where('reason', 'like', '%pre due%')->orWhere('reason', 'like', '%sell%')->sum('amount');
-                    $ttlpaid = DB::table('customer_ledger')->where('reason', 'like', '%receive%')->sum('amount');
-                    $due=$ttlBill-$ttlpaid;
-               ?>
-              <div class="small-box bg-aqua">
-                <div class="inner">
-                  <h3 style="font-size: 20px;"></h3>
-                  <p><center><b>Customer Due </b><br><span style="font-size: 25px">{{$due}}</span></center></p>
-                </div>
-              </div>
-              </a>
-            </div>
       </div>
-  
-  </div>
+    </div>
+      <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-body"> 
+              <div class="row">
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.bm').'/branches'}}" style="color: #ffffff">
+                      <?php
+                          $ttlBranch = DB::table('branchs')->count();
+                      ?>
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{$ttlBranch}}</h3>
+                          <p>Total Branch</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer'}}" style="color: #ffffff">
+                      <?php
+                          $ttlCustomer = DB::table('customer')->count();
+                      ?>
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/designation.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{$ttlCustomer}}</h3>
+                          <p>Total Customer</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.sm').'/stock-product'}}" style="color: #ffffff">
+                      <?php
+                          $ttlMainStock = DB::table('stock_product')->where('branch_id', '0')->sum('quantity');
+                      ?>
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/designation.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{$ttlMainStock}}</h3>
+                          <p>Main Stock</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.sm').'/branch-stock'}}" style="color: #ffffff">
+                      <?php
+                          $ttlBranchStock = DB::table('stock_product')->where('branch_id', '!=', '0')->sum('quantity');
+                      ?>
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{$ttlBranchStock}}</h3>
+                          <p>Branch Stock</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" style="color: #ffffff">
+                      <?php
+                          $ttlBill = DB::table('customer_ledger')->where('reason', 'like', '%pre due%')->orWhere('reason', 'like', '%sell%')->sum('amount');
+                          $ttlpaid = DB::table('customer_ledger')->where('reason', 'like', '%receive%')->sum('amount');
+                          $due=$ttlBill-$ttlpaid;
+                      ?>
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{number_format($due,2)}}</h3>
+                          <p>Customer Due</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.sm').'/stock-product'}}" style="color: #ffffff">
+                      <?php
+                          $ttlMainStock = DB::table('stock_product')->where('branch_id', '0')->sum('quantity');
+                      ?>
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/designation.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{$ttlMainStock}}</h3>
+                          <p>Main Stock</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.sm').'/branch-stock'}}" style="color: #ffffff">
+                      <?php
+                          $ttlBranchStock = DB::table('stock_product')->where('branch_id', '!=', '0')->sum('quantity');
+                      ?>
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{$ttlBranchStock}}</h3>
+                          <p>Branch Stock</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" style="color: #ffffff">
+                      <?php
+                          $ttlBill = DB::table('customer_ledger')->where('reason', 'like', '%pre due%')->orWhere('reason', 'like', '%sell%')->sum('amount');
+                          $ttlpaid = DB::table('customer_ledger')->where('reason', 'like', '%receive%')->sum('amount');
+                          $due=$ttlBill-$ttlpaid;
+                      ?>
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{number_format($due,2)}}</h3>
+                          <p>Customer Due</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" style="color: #ffffff">
+                      <?php
+                          $ttlBill = DB::table('customer_ledger')->where('reason', 'like', '%pre due%')->orWhere('reason', 'like', '%sell%')->sum('amount');
+                          $ttlpaid = DB::table('customer_ledger')->where('reason', 'like', '%receive%')->sum('amount');
+                          $due=$ttlBill-$ttlpaid;
+                      ?>
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{number_format($due,2)}}</h3>
+                          <p>Customer Due</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+
+              </div>
             </div>
+          </div>
       </div>
   </div>
 </section>

@@ -318,16 +318,28 @@ input[type=number] {
         </li>
         
         <li class="treeview {{(
-          $url==config('app.supplier').'/local-suppliers' ||
-          $baseUrl.'/'.config('app.supplier').'/payable-suppliers' ||
-          $baseUrl.'/'.config('app.supplier').'/payments-report' ||
-          $baseUrl.'/'.config('app.supplier').'/payment-due-report'
-        ) ? 'active':''}}"> <a href="#"> <i class="fa fa-user-o"></i> <span>Local Purchase</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          $url==config('app.supplier').'/local-suppliers' || 
+          $url==config('app.supplier').'/payable-suppliers' || 
+          $url==config('app.supplier').'/payments-report' || 
+          $url==config('app.supplier').'/payment-due-report' ||
+          $url==config('app.purchase').'/local-purchases' ) ? 'active':''}}">
+           <a href="#"> <i class="fa fa-user-o"></i> <span>Local Purchase</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-            <li class="{{($url==config('app.supplier').'/local-suppliers')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/local-suppliers'}}"><i class="fa fa-angle-double-right"></i>Local Suppliers</a></li>
-            <li class="{{($url==config('app.supplier').'/payable-suppliers')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/payable-suppliers'}}"><i class="fa fa-angle-double-right"></i>Payable Suppliers</a></li>
-            <li class="{{($url==config('app.supplier').'/payments-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/payments-report'}}"><i class="fa fa-angle-double-right"></i>Payments Report</a></li>
-            <li class="{{($url==config('app.supplier').'/payment-due-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/payment-due-report'}}"><i class="fa fa-angle-double-right"></i>Payment Due Report</a></li>
+            <li class="{{($url==config('app.supplier').'/local-suppliers')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/local-suppliers'}}">
+              <i class="fa fa-angle-double-right"></i>Local Suppliers</a>
+            </li>
+            <li class="{{($url==config('app.supplier').'/payable-suppliers')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/payable-suppliers'}}">
+              <i class="fa fa-angle-double-right"></i>Payable Suppliers</a>
+            </li>
+            <li class="{{($url==config('app.supplier').'/payments-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/payments-report'}}">
+              <i class="fa fa-angle-double-right"></i>Payments Report</a>
+            </li>
+            <li class="{{($url==config('app.supplier').'/payment-due-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.supplier').'/payment-due-report'}}">
+              <i class="fa fa-angle-double-right"></i>Payment Due Report</a>
+            </li>
+            <li class="{{($url==config('app.purchase').'/local-purchases')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/local-purchases'}}">
+              <i class="fa fa-angle-double-right"></i>Local Purhcase</a>
+            </li>
           </ul>
         </li>
         
@@ -341,7 +353,20 @@ input[type=number] {
         </li>-->
         
         @if(Auth::user()->type==1)
-        <li class="treeview {{($url==config('app.amendment').'/other-receive-amenment' || $url==config('app.amendment').'/other-payment-amenment' || $url==config('app.amendment').'/purchase-product-edit' || $url==config('app.amendment').'/branch-distribution-amendment' || $url==config('app.amendment').'/sell-product-edit' || $url==config('app.amendment').'/bank-deposit-amendment' || $url==config('app.amendment').'/bank-withdraw-amendment' || $url==config('app.amendment').'/bank-transfer-amendment' || $url==config('app.amendment').'/supplier-payment-amendment' || $url==config('app.amendment').'/customer-bill-amendment' || $url==config('app.amendment').'/employee-salary-amendment') ? 'active':''}}"> <a href="#"> <i class="fa fa-edit"></i> <span>{{ __('messages.menu_amendment') }}</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+        <li class="treeview {{($url==config('app.amendment').'/other-receive-amenment' || 
+        $url==config('app.amendment').'/other-payment-amenment' || 
+        $url==config('app.amendment').'/purchase-product-edit' || 
+        $url==config('app.amendment').'/branch-distribution-amendment' || 
+        $url==config('app.amendment').'/sell-product-edit' || 
+        $url==config('app.amendment').'/bank-deposit-amendment' || 
+        $url==config('app.amendment').'/bank-withdraw-amendment' || 
+        $url==config('app.amendment').'/bank-transfer-amendment' || 
+        $url==config('app.amendment').'/supplier-payment-amendment' || 
+        $url==config('app.amendment').'/customer-bill-amendment' || 
+        $url==config('app.amendment').'/employee-salary-amendment' ||
+        $url==config('app.amendment').'/local-purchase-list') ? 'active':''}}"> 
+        <a href="#"> <i class="fa fa-edit"></i> <span>{{ __('messages.menu_amendment') }}</span> <span class="pull-right-container">
+           <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
             <li class="{{($url==config('app.amendment').'/other-receive-amenment')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.amendment').'/other-receive-amenment'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.other_receive') }}</a></li>
             <li class="{{($url==config('app.amendment').'/other-payment-amenment')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.amendment').'/other-payment-amenment'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.other_payment') }}</a></li>
@@ -356,6 +381,9 @@ input[type=number] {
             <li class="{{($url==config('app.amendment').'/customer-bill-amendment')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.amendment').'/customer-bill-amendment'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.bill_collection') }}</a></li>
             <li class="{{($url==config('app.amendment').'/employee-salary-amendment')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.amendment').'/employee-salary-amendment'}}"><i class="fa fa-angle-double-right"></i>Employee Salary</a></li>
             <li class="{{($url==config('app.amendment').'/branch-distribution-amendment')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.amendment').'/branch-distribution-amendment'}}"><i class="fa fa-angle-double-right"></i>Branch Distribution</a></li>
+            <li class="{{($url==config('app.amendment').'/local-purchase-list')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.amendment').'/local-purchase-list'}}">
+              <i class="fa fa-angle-double-right"></i>Local Purchases</a>
+            </li>
           </ul>
         </li>
         @endif

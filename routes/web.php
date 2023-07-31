@@ -173,6 +173,7 @@ Route::group(['middleware'=>['auth']],function(){
         Route::post('customer-ledger-document-upload/{id}', 'ProductSupplierController@uploadCustomerDocument')->name('customer-ledger-document-upload');
         Route::post('lc-detail-document-upload/{id}', 'ProductSupplierController@uploadLCDocument')->name('lc-detail-document-upload');
 
+        // local supplier
         Route::resource('local-suppliers', 'LocalSupplierController');
         Route::get('payable-suppliers', 'LocalSupplierController@payableSuppliers')->name('payable-suppliers');
         Route::get('payment-form/{id}', 'LocalSupplierController@paymentForm')->name('payment-form');
@@ -215,6 +216,9 @@ Route::group(['middleware'=>['auth']],function(){
         Route::resource('mother-vasle', 'MotherVasleController');
         
         Route::post('find-product-details-with-type-id', 'AddToStockController@getTypeWiseProduct');
+
+        //local purchase
+        Route::resource('local-purchases', 'LocalPurchaseController');
     });
 
     // ********* Truck Management ****** //
@@ -319,6 +323,9 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('branch-distribution-amendment', 'DistributionReportController@branchDistribution');
         Route::post('branch-distribution-amendment', 'DistributionReportController@branchDistributionFilter')->name('branch-distribution-amendment.filter');
         Route::delete('delete-branch-distribution/{id}', 'DistributionReportController@destroy')->name('delete-branch-distribution');
+
+        // local purchase
+        Route::get('local-purchase-list', 'LocalPurchaseController@list')->name('local-purchase-list');
     });
 
     // ********** Site Setting ***** //
