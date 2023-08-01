@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\lcInfo;
+use App\Models\LcProductStatus;
 use Illuminate\Http\Request;
 use App\Models\BankAccount;
 use App\Models\Supplier;
@@ -31,6 +33,9 @@ class AddToStockController extends Controller
         $data['allbank']= BankAccount::where('status', '1')->get();
         $data['allsupplier']= Supplier::where('status', '1')->get();
         $data['allproduct']= Product::where('status', '1')->get();
+
+        $data['lcInfos']= lcInfo::where('status', '1')->get();
+        $data['lcProducts'] = LcProductStatus::where('due_quantity', '>', 0)->get();
         return view('purchase.add-to-stock', $data);
     }
 
@@ -79,17 +84,28 @@ class AddToStockController extends Controller
             $ttlQnty=0;
             foreach ($request->purchase_details as $value) {
                 // Creating product Stock
-                $checkProduct = StockProduct::where([['product_id', $value['product_id']],['branch_id', '0']])->first();
-                $count = StockProduct::where([['product_id', $value['product_id']],['branch_id', '0']])->count();
-                if ($count == 1) {
-                    $update=StockProduct::where([['product_id', $value['product_id']],['branch_id', '0']])->increment('quantity', $value['quantity']);
+                $stockProduct = StockProduct::where([['product_id', $value['product_id']],['branch_id', '0']])->first();
+                if (!empty($stockProduct)) {
                     
-                    // updating unit price
-                    $updatedUnitPrice = (($checkProduct->quantity*$checkProduct->unit_price)+($value['quantity']*$value['unit_price']))/($checkProduct->quantity+$value['quantity']);
+                    $stockProductPrice = $stockProduct->quantity * $stockProduct->unit_price; 
+                    $purchaseProductPrice = $value['quantity'] * $value['unit_price'];
+                    $amendmentProductPrice = $stockProductPrice + $purchaseProductPrice;
 
-                    $update=StockProduct::where([['product_id', $value['product_id']],['branch_id', '0']])->update(array('unit_price' => $updatedUnitPrice));
+                    $stockProductQuantity = $stockProduct->quantity + $value['quantity'];
+                    
+                    if ($stockProductQuantity == 0) {
+                        $productAvgPrice = 0;
+                    } else {
+                        $productAvgPrice = $amendmentProductPrice / $stockProductQuantity;
+                    }
+
+                    $stockProduct->update([
+                        'quantity' => $stockProductQuantity,
+                        'unit_price' => $productAvgPrice,
+                    ]);
+
                 }else{
-                    $insert= StockProduct::create([
+                    StockProduct::create([
                         'branch_id'=>'0',
                         'product_id'=>$value['product_id'],
                         'quantity'=>$value['quantity'],
@@ -101,7 +117,7 @@ class AddToStockController extends Controller
                 StockProductDetail::create([
                     'date'=>date('Y-m-d', strtotime($request->stock_date)),
                     'branch_id'=>'0',
-                    'product_type_id'=>$request->product_type_id,
+                    'product_type_id'=>$stockProduct->stockproduct_product_object->product_type_id ?? 1,
                     'product_id'=>$value['product_id'],
                     'quantity'=>$value['quantity'],
                     'unit_price'=>$value['unit_price'],
@@ -110,6 +126,9 @@ class AddToStockController extends Controller
                     'tok'=>Session::get('sellSession'),
                     'status'=>'1'
                 ]);
+
+                LcProductStatus::where([['product_id', $value['product_id']],['lc_no', $request->product_type_id]])->increment('receive_quantity', $value['quantity']);
+                LcProductStatus::where([['product_id', $value['product_id']],['lc_no', $request->product_type_id]])->decrement('due_quantity', $value['quantity']);
                 
                 $ttlQnty += $value['quantity'];
             }
@@ -303,6 +322,18 @@ class AddToStockController extends Controller
         $productDetails = DB::table('product')
             ->where('product.status', '1')
             ->where('product.product_type_id', $request->type_id)
+            ->select('product.id','product.name')
+            ->get();
+        return Response::json($productDetails);
+        die;
+    }
+    
+    public function lcProduct(Request $request)
+    {
+        $productDetails = DB::table('lc_product_statuses')
+            ->join('product', 'lc_product_statuses.product_id', 'product.id')
+            ->where('lc_product_statuses.lc_no', $request->type_id)
+            ->where('lc_product_statuses.due_quantity', '>', 0)
             ->select('product.id','product.name')
             ->get();
         return Response::json($productDetails);

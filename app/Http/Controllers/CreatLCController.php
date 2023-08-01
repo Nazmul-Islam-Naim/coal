@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\LcProductStatus;
 use Illuminate\Http\Request;
 use App\Models\Branch;
 use App\Models\Supplier;
@@ -179,6 +180,16 @@ class CreatLCController extends Controller
                 $input['tok'] = Session::get('sellSession');
                 $input['created_by'] = Auth::id();
                 LcProductDetails::create($input);
+
+                LcProductStatus::create([
+                    'lc_info_id' => $insert->id,
+                    'product_id' => $value['product_id'],
+                    'lc_no' => $request->lc_no,
+                    'total_quantity' => $value['quantity'],
+                    'receive_quantity' => 0,
+                    'due_quantity' => $value['quantity'],
+                    'date' => $request->opening_date,
+                ]);
                 
                 $ttlQnty += $value['quantity'];
             }
@@ -349,6 +360,7 @@ class CreatLCController extends Controller
             
             // delete old detail and insert new data
             LcProductDetails::where('lc_id', $id)->delete();
+            LcProductStatus::where('lc_info_id', $id)->delete();
             foreach ($request->purchase_details as $value) {
                 $input['lc_id'] = $id;
                 $input['product_type_id'] = $value['product_type_id'];
@@ -358,6 +370,17 @@ class CreatLCController extends Controller
                 $input['tok'] = $data->tok;
                 $input['created_by'] = Auth::id();
                 LcProductDetails::create($input);
+
+                LcProductStatus::create([
+                    'lc_info_id' => $data->id,
+                    'product_id' => $value['product_id'],
+                    'lc_no' => $request->lc_no,
+                    'total_quantity' => $value['quantity'],
+                    'receive_quantity' => 0,
+                    'due_quantity' => $value['quantity'],
+                    'date' => $request->opening_date,
+                ]);
+                
                 
                 $ttlQnty += $value['quantity'];
             }

@@ -74,6 +74,7 @@ class LocalPurchaseController extends Controller
      */
     public function store(CreateRequest $request)
     {
+        $productAvgPrice = 0;
         try {
             DB::beginTransaction();
             
@@ -93,14 +94,36 @@ class LocalPurchaseController extends Controller
                     'quantity' => $value['quantity']
                 ]);
 
-                StockProduct::create([
-                    'branch_id'=>0,
-                    'product_id'=>$value['product_id'],
-                    'quantity'=>$value['quantity'],
-                    'unit_price'=>$value['unit_price'],
-                    'status'=>'1',
-                    'created_by'=>Auth::id()
-                ]);
+                // Creating product Stock
+                $stockProduct = StockProduct::where([['product_id', $value['product_id']],['branch_id', '0']])->first();
+                if (!empty($stockProduct)) {
+                    
+                    $stockProductPrice = $stockProduct->quantity * $stockProduct->unit_price; 
+                    $purchaseProductPrice = $value['quantity'] * $value['unit_price'];
+                    $amendmentProductPrice = $stockProductPrice + $purchaseProductPrice;
+
+                    $stockProductQuantity = $stockProduct->quantity + $value['quantity'];
+                    
+                    if ($stockProductQuantity == 0) {
+                        $productAvgPrice = 0;
+                    } else {
+                        $productAvgPrice = $amendmentProductPrice / $stockProductQuantity;
+                    }
+
+                    $stockProduct->update([
+                        'quantity' => $stockProductQuantity,
+                        'unit_price' => $productAvgPrice,
+                    ]);
+
+                }else{
+                    StockProduct::create([
+                        'branch_id'=>'0',
+                        'product_id'=>$value['product_id'],
+                        'quantity'=>$value['quantity'],
+                        'unit_price'=>$value['unit_price'],
+                        'status'=>'1'
+                    ]);
+                }
 
                 StockProductDetail::create([
                         'branch_id' => 0, 
@@ -172,7 +195,90 @@ class LocalPurchaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $this->destroyAndUpdate($id);
+            
+            $localPurchase = LocalPurchase::create([
+                'local_supplier_id' => $request->local_supplier_id,
+                'amount' => $request->sub_total,
+                'date' => $request->date,
+                'note' => $request->note,
+                'created_by' => Auth::user()->id,
+            ]);
+
+            foreach ($request->purchase_details as $key => $value) {
+
+                $localPurchase->purchaseDetails()->create([
+                    'product_id' => $value['product_id'],
+                    'unit_price' => $value['unit_price'],
+                    'quantity' => $value['quantity']
+                ]);
+
+                // Creating product Stock
+                $stockProduct = StockProduct::where([['product_id', $value['product_id']],['branch_id', '0']])->first();
+                if (!empty($stockProduct)) {
+                    
+                    $stockProductPrice = $stockProduct->quantity * $stockProduct->unit_price; 
+                    $purchaseProductPrice = $value['quantity'] * $value['unit_price'];
+                    $amendmentProductPrice = $stockProductPrice + $purchaseProductPrice;
+
+                    $stockProductQuantity = $stockProduct->quantity + $value['quantity'];
+                    
+                    if ($stockProductQuantity == 0) {
+                        $productAvgPrice = 0;
+                    } else {
+                        $productAvgPrice = $amendmentProductPrice / $stockProductQuantity;
+                    }
+
+                    $stockProduct->update([
+                        'quantity' => $stockProductQuantity,
+                        'unit_price' => $productAvgPrice,
+                    ]);
+
+                }else{
+                    StockProduct::create([
+                        'branch_id'=>'0',
+                        'product_id'=>$value['product_id'],
+                        'quantity'=>$value['quantity'],
+                        'unit_price'=>$value['unit_price'],
+                        'status'=>'1'
+                    ]);
+                }
+
+                StockProductDetail::create([
+                        'branch_id' => 0, 
+                        'date' => $request->date, 
+                        'product_type_id' => $value['product_type_id'], 
+                        'product_id' => $value['product_id'], 
+                        'quantity' => $value['quantity'], 
+                        'unit_price' => $value['unit_price'], 
+                        'reason' => 'Purchase', 
+                        'tok' => $localPurchase->id, 
+                        'note' => $request->note, 
+                        'status' => 1
+                ]);
+            }
+
+            LocalSupplier::where('id', $request->local_supplier_id)->increment('bill', $request->sub_total);
+            LocalSupplier::where('id', $request->local_supplier_id)->increment('due', $request->sub_total);
+
+            LocalSupplierLedger::create([
+                'local_supplier_id' => $request->local_supplier_id,
+                'date' => $request->date,
+                'reason' => 'Purchase',
+                'amount' => $request->sub_total,
+                'note' => $request->note,
+            ]);
+            DB::commit();
+            Session::flash('flash_message','Local Purchase Successfully Updated !');
+            return redirect()->route('local-purchases.index')->with('status_color','success');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Session::flash('flash_message','Something Error Found !');
+            return redirect()->back()->with('status_color','danger');
+        }
     }
 
     /**
@@ -184,13 +290,10 @@ class LocalPurchaseController extends Controller
     public function destroy($id)
     {
         try {
-            // not complete
             DB::beginTransaction();
-            
-            $localPurchase = LocalPurchase::findOrFail($id);
-            $localPurchase->purchaseDetails()->delete();
+            $this->destroyAndUpdate($id);
             DB::commit();
-            Session::flash('flash_message','Local Purchase Successfully Created !');
+            Session::flash('flash_message','Local Purchase Successfully Deleted !');
             return redirect()->route('local-purchases.index')->with('status_color','success');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -231,5 +334,45 @@ class LocalPurchaseController extends Controller
             $data['localPurchases'] = LocalPurchase::paginate(250);
             return view('localPurchase.list', $data);
         }
+    }
+
+     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyAndUpdate($id):void{
+        $productAvgPrice = 0;
+        $localPurchase = LocalPurchase::findOrFail($id);
+        foreach ($localPurchase->purchaseDetails as $key => $value) {
+            $stockProduct = StockProduct::where([['product_id', $value['product_id']],['branch_id', '0']])->first();
+
+            $stockProductPrice = $stockProduct->quantity * $stockProduct->unit_price; 
+            $purchaseProductPrice = $value['quantity'] * $value['unit_price'];
+            $amendmentProductPrice = $stockProductPrice - $purchaseProductPrice;
+
+            $stockProductQuantity = $stockProduct->quantity - $value['quantity'];
+
+            if ($stockProductQuantity == 0) {
+                $productAvgPrice = 0;
+            } else {
+                $productAvgPrice = $amendmentProductPrice / $stockProductQuantity;
+            }
+
+            $stockProduct->update([
+                'quantity' => $stockProductQuantity,
+                'unit_price' => $productAvgPrice,
+            ]);
+        }
+        $localPurchase->stockProductDetails()->delete();
+
+        LocalSupplier::where('id', $localPurchase->local_supplier_id)->decrement('bill', $localPurchase->amount);
+        LocalSupplier::where('id', $localPurchase->local_supplier_id)->decrement('due', $localPurchase->amount);
+
+        LocalSupplierLedger::where('local_supplier_id', $localPurchase->local_supplier_id)->delete();
+
+        $localPurchase->purchaseDetails()->delete();
+        $localPurchase->delete();
     }
 }

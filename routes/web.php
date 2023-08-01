@@ -83,6 +83,9 @@ Route::group(['middleware'=>['auth']],function(){
         
         Route::get('discount-on-purchase', 'AddToStockController@discountOnPurchase');
         Route::post('save-discount-on-purchase', 'AddToStockController@saveDiscountOnPurchase')->name('save-discount-on-purchase');
+
+        
+        Route::post('lc-products', 'AddToStockController@lcProduct');
     });
 
     //****** Customers ******//
@@ -219,6 +222,7 @@ Route::group(['middleware'=>['auth']],function(){
 
         //local purchase
         Route::resource('local-purchases', 'LocalPurchaseController');
+        Route::get('lc-product-status/{lc_no?}', 'LCReportController@lcProductStatus')->name('lc-product-status');
     });
 
     // ********* Truck Management ****** //

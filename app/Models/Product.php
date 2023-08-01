@@ -20,4 +20,8 @@ class Product extends Model
     {
         return $this->hasOne('App\Models\ProductUnit', 'id', 'unit_id');
     }
+
+    public function stock(){
+        return $this->hasOne(StockProduct::class)->where('branch_id',0);
+    }
 }

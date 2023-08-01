@@ -27,4 +27,8 @@ class lcInfo extends Model
     {
         return $this->hasOne('App\Models\BankAccount', 'id', 'bank_id');
     }
+
+    public function lcProductStatus(){
+        return $this->hasMany(LcProductStatus::class);
+    }
 }

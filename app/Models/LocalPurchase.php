@@ -19,4 +19,8 @@ class LocalPurchase extends Model
     public function purchaseDetails(){
         return $this->hasMany(LocalPurchaseDetails::class);
     }
+
+    public function stockProductDetails(){
+        return $this->hasMany(StockProductDetail::class, 'tok');
+    }
 }

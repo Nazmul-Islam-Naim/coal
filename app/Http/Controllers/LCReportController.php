@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\Filter\LcFilter;
+use App\Models\lcInfo;
+use App\Models\LcProductStatus;
 use Illuminate\Http\Request;
 use App\Models\Branch;
 use Validator;
@@ -153,4 +156,24 @@ class LCReportController extends Controller
             return redirect()->back()->with('status_color','danger');
         }
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function lcProductStatus(LcFilter $request)
+    {
+        if ($request->lc_no != '') {
+            $data['lcInfos'] = lcInfo::select('lc_no')->get();
+            $data['alldata']= LcProductStatus::where('lc_no', $request->lc_no)->paginate(250);
+            return view('purchase.lcProductStatus ', $data);
+        } else {
+            $data['lcInfos'] = lcInfo::select('lc_no')->get();
+            $data['alldata']= LcProductStatus::paginate(250);
+            return view('purchase.lcProductStatus ', $data);
+        }
+        
+    }
+
 }

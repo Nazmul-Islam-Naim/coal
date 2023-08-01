@@ -143,7 +143,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control individualBookStockQnty" id="stockqnty_{{$row_num}}" readonly>
+                                    <input type="text" class="form-control individualBookStockQnty" id="stockqnty_{{$row_num}}" value="{{$value->lc_product_object->stock->quantity ?? ''}}" readonly>
                                 </td>
                                 <td>
                                     <input type="text" name="purchase_details[{{$row_num}}][quantity]" class="form-control individualBookQnty" id="quantity_{{$row_num}}" onkeyup="multiply({{$row_num}});" value="{{$value->quantity}}" required="" autocomplete="off">

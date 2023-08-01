@@ -243,7 +243,19 @@ input[type=number] {
         </li>-->
 
         @if(Auth::user()->type==1)
-        <li class="treeview {{($url==config('app.purchase').'/lc' || $url==config('app.purchase').'/lc-report' || $url==config('app.purchase').'/lc-payment' || $url==config('app.purchase').'/lc/create' || $url==config('app.purchase').'/lc-payment-report' || $url==config('app.purchase').'/lc-fees' || $url==config('app.purchase').'/fee-type' || $url==config('app.purchase').'/lc-fees-update-report' || $url==config('app.purchase').'/lc-payment' || $url==config('app.purchase').'/lc-report'  || $url==config('app.purchase').'/lc-expire' || $url==config('app.purchase').'/manage-mother-vasle' || $url==config('app.purchase').'/mother-vasle' || $url==config('app.purchase').'/product-wise-purchase-report' || $url==config('app.purchase').'/discount-on-purchase') ? 'active':''}}"> <a href="#"> <i class="fa fa-exchange"></i> <span>{{ __('messages.purchase_product') }}</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+        <li class="treeview {{($url==config('app.purchase').'/lc' || 
+        $url==config('app.purchase').'/lc-report' ||  
+        $url==config('app.purchase').'/lc/create' || 
+        $url==config('app.purchase').'/lc-payment-report' || 
+        $url==config('app.purchase').'/lc-fees' || 
+        $url==config('app.purchase').'/fee-type' || 
+        $url==config('app.purchase').'/lc-fees-update-report' || 
+        $url==config('app.purchase').'/lc-payment' || 
+        $url==config('app.purchase').'/lc-expire' || 
+        $url==config('app.purchase').'/lc-product-status') ? 'active':''}}"> 
+        <a href="#"> <i class="fa fa-exchange">
+          </i> <span>{{ __('messages.purchase_product') }}</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> 
+        </a>
           <ul class="treeview-menu">
             <li class="{{($url==config('app.purchase').'/lc/create')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc/create'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.Create_LC') }}</a></li>
             <li class="{{($url==config('app.purchase').'/lc')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.LC_list') }}</a></li>
@@ -251,19 +263,9 @@ input[type=number] {
             <li class="{{($url==config('app.purchase').'/lc-payment')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-payment'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.LC_payment') }}</a></li>
             <li class="{{($url==config('app.purchase').'/fee-type')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/fee-type'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.fee_type') }}</a></li>
             <li class="{{($url==config('app.purchase').'/lc-fees')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-fees'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.LC_fees_payment') }}</a></li>
-            <!--<li class="{{($url==config('app.purchase').'/view-lc')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/view-lc'}}"><i class="fa fa-angle-double-right"></i>View LC</a></li>-->
-            <!--<li class="{{($url==config('app.purchase').'/lc-payment-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-payment-report'}}"><i class="fa fa-angle-double-right"></i>LC Payment Report</a></li>
-            <li class="{{($url==config('app.purchase').'/lc-fees-update')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-fees-update'}}"><i class="fa fa-angle-double-right"></i>LC Fees Update</a></li>
-            <li class="{{($url==config('app.purchase').'/lc-fees-update-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-fees-update-report'}}"><i class="fa fa-angle-double-right"></i>LC Fees Update Report</a></li>
-            <li class="{{($url==config('app.purchase').'/lc-payment')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-payment'}}"><i class="fa fa-angle-double-right"></i>LC Payment</a></li>
-            <li class="{{($url==config('app.purchase').'/lc-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-report'}}"><i class="fa fa-angle-double-right"></i>LC Report</a></li>
-            <li class="{{($url==config('app.purchase').'/lc-expire')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-expire'}}"><i class="fa fa-angle-double-right"></i>LC Expire</a></li>
-            <li class="{{($url==config('app.purchase').'/manage-mother-vasle')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/manage-mother-vasle'}}"><i class="fa fa-angle-double-right"></i>Manage Mother Vasle</a></li>
-            <li class="{{($url==config('app.purchase').'/mother-vasle')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/mother-vasle'}}"><i class="fa fa-angle-double-right"></i>Mother Vasle</a></li>-->
-           <!-- <li class="{{($url==config('app.purchase').'/product-purchase')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/product-purchase'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.purchase_product') }}</a></li>
-            <li class="{{($url==config('app.purchase').'/purchase-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/purchase-report'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.purchase_report') }}</a></li>
-            <li class="{{($url==config('app.purchase').'/product-wise-purchase-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/product-wise-purchase-report'}}"><i class="fa fa-angle-double-right"></i>Product Wise Purchase Report</a></li>-->
-            <!--<li class="{{($url==config('app.purchase').'/discount-on-purchase')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/discount-on-purchase'}}"><i class="fa fa-angle-double-right"></i>Discount On Purchase</a></li>-->
+            <li class="{{($url==config('app.purchase').'/lc-product-status')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-product-status'}}">
+              <i class="fa fa-angle-double-right"></i>Lc Product Status</a>
+            </li>
           </ul>
         </li>
         @endif

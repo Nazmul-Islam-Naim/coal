@@ -77,7 +77,7 @@
               </div> --}}
             <div class="col-md-4">
               <div class="form-group"> 
-                <label>Select LC NO<span style="color: red">*</span></label>
+                <label>{{ __('messages.product_type') }} <span style="color: red">*</span></label>
                 <select class="form-control select2" name="product_type_id" id="productTypeId" required=""> 
                   <option value="">--Select--</option>
                   @foreach($lcInfos as $lcInfo)
@@ -159,7 +159,7 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
           method: "POST",
-          url: "{{$baseUrl.'/'.config('app.sm').'/lc-products'}}",
+          url: "{{$baseUrl.'/'.config('app.sm').'/find-product-details-with-type-id'}}",
           data: {
             'type_id' : value,
           },
@@ -190,7 +190,8 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
           method: "POST",
-          url: "{{$baseUrl.'/'.config('app.sm').'/lc-products'}}",
+          //url: "{{URL::to('find-product-details-with-id')}}",
+          url: "{{$baseUrl.'/'.config('app.sm').'/find-product-details-with-type-id'}}",
           data: {
             'type_id' : value,
           },
