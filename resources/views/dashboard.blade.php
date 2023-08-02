@@ -19,15 +19,6 @@
 ?>
 <section class="content-header">
   <h1> {{ __('messages.dashboard') }} <!--<small>Quick Links</small>--> </h1>
-
-  <!--<a href="{{$baseUrl.'/'.config('app.purchase').'/product-purchase'}}" class="btn btn-success btn-sm"><i class="fa fa-shopping-cart"></i> Product Purchase</a>-->
-  <!--<a href="{{$baseUrl.'/'.config('app.sell').'/product-sell'}}" class="btn btn-warning btn-sm"><i class="fa fa-exchange"></i> Sell Product</a>-->
-  <!--<a href="{{$baseUrl.'/'.config('app.sell').'/pos-sell'}}" class="btn btn-info btn-sm"><i class="fa fa-exchange"></i> POS Sell</a>-->
-  <!--<a href="{{$baseUrl.'/'.config('app.product').'/stock-product'}}" class="btn btn-success btn-sm"><i class="fa fa-product-hunt"></i> Stock Product</a>-->
-  <!--<a href="{{$baseUrl.'/'.config('app.account').'/bank-account'}}" class="btn btn-warning btn-sm"><i class="fa fa-bank"></i> Accounts</a>-->
-  <!--<a href="{{$baseUrl.'/'.config('app.sell').'/sell-report'}}" class="btn btn-success btn-sm"><i class="fa fa-list"></i> Job Card Report</a>-->
-  <!--<a href="{{$baseUrl.'/'.config('app.sell').'/customer-list'}}" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Create Job Card</a>-->
-  <!--<a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Bill Collection</a>-->
   
   <ol class="breadcrumb">
     <li><a href="{{URL::To('dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -58,9 +49,6 @@
               <div class="row">
                   <div class="col-md-4 col-sm-6 col-xs-12">
                     <a href="{{$baseUrl.'/'.config('app.bm').'/branches'}}" style="color: #ffffff">
-                      <?php
-                          $ttlBranch = DB::table('branchs')->count();
-                      ?>
                       <div class="small-box bg-white custom">
                         <div class="inner">
                           <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
@@ -75,9 +63,6 @@
                   
                   <div class="col-md-4 col-sm-6 col-xs-12">
                     <a href="{{$baseUrl.'/'.config('app.customer').'/customer'}}" style="color: #ffffff">
-                      <?php
-                          $ttlCustomer = DB::table('customer')->count();
-                      ?>
                       <div class="small-box bg-white custom">
                         <div class="inner">
                           <img src="{{asset('custom/img/dashboard/designation.gif')}}" alt="">
@@ -92,9 +77,6 @@
                   
                   <div class="col-md-4 col-sm-6 col-xs-12">
                     <a href="{{$baseUrl.'/'.config('app.sm').'/stock-product'}}" style="color: #ffffff">
-                      <?php
-                          $ttlMainStock = DB::table('stock_product')->where('branch_id', '0')->sum('quantity');
-                      ?>
                       <div class="small-box bg-white custom">
                         <div class="inner">
                           <img src="{{asset('custom/img/dashboard/designation.gif')}}" alt="">
@@ -109,9 +91,6 @@
                   
                   <div class="col-md-4 col-sm-6 col-xs-12">
                     <a href="{{$baseUrl.'/'.config('app.sm').'/branch-stock'}}" style="color: #ffffff">
-                      <?php
-                          $ttlBranchStock = DB::table('stock_product')->where('branch_id', '!=', '0')->sum('quantity');
-                      ?>
                       <div class="small-box bg-white custom">
                         <div class="inner">
                           <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
@@ -126,87 +105,12 @@
                   
                   <div class="col-md-4 col-sm-6 col-xs-12">
                     <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" style="color: #ffffff">
-                      <?php
-                          $ttlBill = DB::table('customer_ledger')->where('reason', 'like', '%pre due%')->orWhere('reason', 'like', '%sell%')->sum('amount');
-                          $ttlpaid = DB::table('customer_ledger')->where('reason', 'like', '%receive%')->sum('amount');
-                          $due=$ttlBill-$ttlpaid;
-                      ?>
                       <div class="small-box bg-white custom">
                         <div class="inner">
                           <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
                         </div>
                         <div class="inner">
-                          <h3 style="font-size: 20px;">{{number_format($due,2)}}</h3>
-                          <p>Customer Due</p>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <a href="{{$baseUrl.'/'.config('app.sm').'/stock-product'}}" style="color: #ffffff">
-                      <?php
-                          $ttlMainStock = DB::table('stock_product')->where('branch_id', '0')->sum('quantity');
-                      ?>
-                      <div class="small-box bg-white custom">
-                        <div class="inner">
-                          <img src="{{asset('custom/img/dashboard/designation.gif')}}" alt="">
-                        </div>
-                        <div class="inner">
-                          <h3 style="font-size: 20px;">{{$ttlMainStock}}</h3>
-                          <p>Main Stock</p>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                  
-                  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <a href="{{$baseUrl.'/'.config('app.sm').'/branch-stock'}}" style="color: #ffffff">
-                      <?php
-                          $ttlBranchStock = DB::table('stock_product')->where('branch_id', '!=', '0')->sum('quantity');
-                      ?>
-                      <div class="small-box bg-white custom">
-                        <div class="inner">
-                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
-                        </div>
-                        <div class="inner">
-                          <h3 style="font-size: 20px;">{{$ttlBranchStock}}</h3>
-                          <p>Branch Stock</p>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                  
-                  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" style="color: #ffffff">
-                      <?php
-                          $ttlBill = DB::table('customer_ledger')->where('reason', 'like', '%pre due%')->orWhere('reason', 'like', '%sell%')->sum('amount');
-                          $ttlpaid = DB::table('customer_ledger')->where('reason', 'like', '%receive%')->sum('amount');
-                          $due=$ttlBill-$ttlpaid;
-                      ?>
-                      <div class="small-box bg-white custom">
-                        <div class="inner">
-                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
-                        </div>
-                        <div class="inner">
-                          <h3 style="font-size: 20px;">{{number_format($due,2)}}</h3>
-                          <p>Customer Due</p>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" style="color: #ffffff">
-                      <?php
-                          $ttlBill = DB::table('customer_ledger')->where('reason', 'like', '%pre due%')->orWhere('reason', 'like', '%sell%')->sum('amount');
-                          $ttlpaid = DB::table('customer_ledger')->where('reason', 'like', '%receive%')->sum('amount');
-                          $due=$ttlBill-$ttlpaid;
-                      ?>
-                      <div class="small-box bg-white custom">
-                        <div class="inner">
-                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
-                        </div>
-                        <div class="inner">
-                          <h3 style="font-size: 20px;">{{number_format($due,2)}}</h3>
+                          <h3 style="font-size: 20px;">{{number_format($customerDue,2)}}</h3>
                           <p>Customer Due</p>
                         </div>
                       </div>
