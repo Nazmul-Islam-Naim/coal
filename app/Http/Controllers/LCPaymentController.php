@@ -23,20 +23,16 @@ class LCPaymentController extends Controller
      */
     public function index(Request $request)
     {
-        if(!empty($request->lcno)){
-            $check = lcInfo::where([['status', '1'],['lc_no', $request->lcno]])->count();
-            if($check==1){
-                $data['row']='1';
-                $data['single_data']= lcInfo::where([['status', '1'],['lc_no', $request->lcno]])->first();
-                $data['allaccounts']= BankAccount::where('status', '1')->get();
-                return view('purchase.lcPayment ', $data);
-            }else{
-                $data['row']='0';
-                $data['single_data']= 'Sorry ! LC not Found/Completed with provided LC number. Please input correct LC number.';
-                return view('purchase.lcPayment',$data); 
-            }
+        if(!empty($request->lc_no)){
+            $data['row']='1';
+            $data['single_data']= lcInfo::where([['status', '1'],['lc_no', $request->lc_no]])->first();
+            $data['allaccounts']= BankAccount::where('status', '1')->get();
+            $data['lcInfos']= lcInfo::where('status', '1')->select('lc_no')->get();
+            $data['lc_no'] = $request->lc_no;
+            return view('purchase.lcPayment ', $data);
         }else{
-            return view('purchase.lcPayment'); 
+            $data['lcInfos']= lcInfo::where('status', '1')->select('lc_no')->get();
+            return view('purchase.lcPayment',$data); 
         }
     }
 

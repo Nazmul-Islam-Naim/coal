@@ -49,16 +49,20 @@
                   <tbody>
                     <tr>
                       <td style="text-align: center;">
-                        <form method="get" action="">
-                        <div class="form-inline">
-                          <div class="form-group">
-                            <label>{{ __('messages.LC_No') }} : </label>
-                            <input type="text" name="lcno" class="form-control" value="" required="" autocomplete="off">
+                        <form method="get" action="{{ route('lc-fees.index') }}">
+                          <div class="form-inline">
+                            <div class="form-group">
+                              <select class="form-control select2" name="lc_no">
+                                  <option value="">Select Lc No</option>
+                                  @foreach($lcInfos as $lcInfo)
+                                  <option value="{{$lcInfo->lc_no}}">{{$lcInfo->lc_no}}</option>
+                                  @endforeach
+                              </select>
+                            </div>
+                            <div class="form-group">
+                              <input type="submit" value="Search" class="btn btn-success btn-md">
+                            </div>
                           </div>
-                          <div class="form-group">
-                            <input type="submit" value="Search" class="btn btn-success btn-md">
-                          </div>
-                        </div>
                         </form>
                       </td>
                     </tr>
@@ -66,7 +70,7 @@
                 </table>
               </div>
             </div>
-            @if(isset($_GET['lcno']))
+            @if(!empty($lc_no))
             <div class="col-md-6 col-md-offset-3"> 
             @if(!empty($existsData) && count($existsData)!=0)
             {!! Form::open(array('route' =>['lc-fees.update',$single_data->id],'method'=>'PUT')) !!}

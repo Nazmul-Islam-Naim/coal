@@ -204,15 +204,13 @@ Route::group(['middleware'=>['auth']],function(){
         Route::resource('lc', 'CreatLCController');
         Route::get('lc-complete/{id}', 'CreatLCController@completeLC')->name('lc-complete');
         Route::get('lc-detail/{id}', 'CreatLCController@lcDetail');
-        Route::get('lc-report', 'CreatLCController@getLcReport');
+        Route::get('lc-report', 'CreatLCController@getLcReport')->name('lc-report');
         Route::resource('lc-payment', 'LCPaymentController');
-        //Route::get('view-lc', 'CreatLCController@lcList');
-        //Route::resource('lc-payment-report', 'LCPaymentReportController');
         Route::resource('fee-type', 'FeeTypeController');
         Route::resource('lc-fees', 'LCFeesController');
+        Route::resource('lc-fees', 'LCFeesController');
+        Route::get('lc-fee-payments-report', 'LCFeesController@lcFeePaymentsReport')->name('lc-fee-payments-report');
         Route::resource('lc-fees-update-report', 'LCFeesUpdateReportController');
-        //Route::resource('lc-payment', 'LCPaymentController');
-        //Route::resource('lc-report', 'LCReportController');
         Route::resource('lc-expire', 'LCExpireController');
         Route::resource('lc-amendment', 'LCAmendmentController');
         Route::resource('manage-mother-vasle', 'ManageMotherVasleController');
@@ -250,7 +248,7 @@ Route::group(['middleware'=>['auth']],function(){
 
         Route::post('find-unitprice-with-package-id', 'ProductSellController@findUnitPriceWithPackageId');
         Route::post('find-product-details-with-id', 'ProductSellController@findproductDetailWithId');
-        Route::get('sell-report', 'ProductSellController@showReport');
+        Route::get('sell-report', 'ProductSellController@showReport')->name('sell-report');
         Route::post('sell-report', 'ProductSellController@showReportFilter')->name('sell-report.filter');
         
         Route::get('product-wise-sell-report', 'ProductSellController@productWiseSellReport');

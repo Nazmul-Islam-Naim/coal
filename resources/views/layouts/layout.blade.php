@@ -252,7 +252,8 @@ input[type=number] {
         $url==config('app.purchase').'/lc-fees-update-report' || 
         $url==config('app.purchase').'/lc-payment' || 
         $url==config('app.purchase').'/lc-expire' || 
-        $url==config('app.purchase').'/lc-product-status') ? 'active':''}}"> 
+        $url==config('app.purchase').'/lc-product-status' ||
+        $url==config('app.purchase').'/lc-fee-payments-report') ? 'active':''}}"> 
         <a href="#"> <i class="fa fa-exchange">
           </i> <span>{{ __('messages.purchase_product') }}</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> 
         </a>
@@ -263,6 +264,7 @@ input[type=number] {
             <li class="{{($url==config('app.purchase').'/lc-payment')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-payment'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.LC_payment') }}</a></li>
             <li class="{{($url==config('app.purchase').'/fee-type')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/fee-type'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.fee_type') }}</a></li>
             <li class="{{($url==config('app.purchase').'/lc-fees')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-fees'}}"><i class="fa fa-angle-double-right"></i>{{ __('messages.LC_fees_payment') }}</a></li>
+            <li class="{{($url==config('app.purchase').'/lc-fee-payments-report')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-fee-payments-report'}}"><i class="fa fa-angle-double-right"></i>LC Fees Payment Report</a></li>
             <li class="{{($url==config('app.purchase').'/lc-product-status')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.purchase').'/lc-product-status'}}">
               <i class="fa fa-angle-double-right"></i>Lc Product Status</a>
             </li>

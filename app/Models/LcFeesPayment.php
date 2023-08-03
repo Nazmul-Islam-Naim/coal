@@ -11,9 +11,13 @@ class LcFeesPayment extends Model
     	'date','bank_id','lc_id','lc_no','fees_type_id','amount','tok','note','created_by','status'
     ];
 
-    public function bankaccount_accounttype_object()
+    public function bank()
     {
-        return $this->hasOne('App\Models\AccountType', 'id', 'account_type');
+        return $this->belongsTo(BankAccount::class);
 
+    }
+
+    public function feesType(){
+        return $this->belongsTo(FeeType::class, 'fees_type_id');
     }
 }

@@ -47,75 +47,174 @@
         <div class="box box-primary">
             <div class="box-body"> 
               <div class="row">
-                  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <a href="{{$baseUrl.'/'.config('app.bm').'/branches'}}" style="color: #ffffff">
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.bm').'/branches'}}" target="_blank"  style="color: #ffffff">
                       <div class="small-box bg-white custom">
                         <div class="inner">
-                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
+                          <img src="{{asset('custom/img/dashboard/products.gif')}}" alt="">
                         </div>
                         <div class="inner">
                           <h3 style="font-size: 20px;">{{$ttlBranch}}</h3>
-                          <p>Total Branch</p>
+                          <p>Number Of Product</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.bm').'/branches'}}" target="_blank"  style="color: #ffffff">
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/branches.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{$ttlBranch}}</h3>
+                          <p>Number Of Branch</p>
                         </div>
                       </div>
                     </a>
                   </div>
                   
-                  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer'}}" style="color: #ffffff">
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer'}}" target="_blank"  style="color: #ffffff">
                       <div class="small-box bg-white custom">
                         <div class="inner">
-                          <img src="{{asset('custom/img/dashboard/designation.gif')}}" alt="">
+                          <img src="{{asset('custom/img/dashboard/exporters.gif')}}" alt="">
                         </div>
                         <div class="inner">
                           <h3 style="font-size: 20px;">{{$ttlCustomer}}</h3>
-                          <p>Total Customer</p>
+                          <p>Number Of Customer</p>
                         </div>
                       </div>
                     </a>
                   </div>
                   
-                  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <a href="{{$baseUrl.'/'.config('app.sm').'/stock-product'}}" style="color: #ffffff">
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{route('product-importer.index')}}" target="_blank"  style="color: #ffffff">
                       <div class="small-box bg-white custom">
                         <div class="inner">
-                          <img src="{{asset('custom/img/dashboard/designation.gif')}}" alt="">
+                          <img src="{{asset('custom/img/dashboard/importers.gif')}}" alt="">
                         </div>
                         <div class="inner">
-                          <h3 style="font-size: 20px;">{{$ttlMainStock}}</h3>
-                          <p>Main Stock</p>
+                          <h3 style="font-size: 20px;">{{$ttlImporters}}</h3>
+                          <p>Number Of Importers</p>
                         </div>
                       </div>
                     </a>
                   </div>
                   
-                  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <a href="{{$baseUrl.'/'.config('app.sm').'/branch-stock'}}" style="color: #ffffff">
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{route('product-supplier.index')}}" target="_blank"  style="color: #ffffff">
                       <div class="small-box bg-white custom">
                         <div class="inner">
-                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
+                          <img src="{{asset('custom/img/dashboard/exporters.gif')}}" alt="">
                         </div>
                         <div class="inner">
-                          <h3 style="font-size: 20px;">{{$ttlBranchStock}}</h3>
-                          <p>Branch Stock</p>
+                          <h3 style="font-size: 20px;">{{$ttlExporters}}</h3>
+                          <p>Number Of Exporters</p>
                         </div>
                       </div>
                     </a>
                   </div>
                   
-                  <div class="col-md-4 col-sm-6 col-xs-12">
-                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" style="color: #ffffff">
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{route('local-suppliers.index')}}" target="_blank"  style="color: #ffffff">
                       <div class="small-box bg-white custom">
                         <div class="inner">
-                          <img src="{{asset('custom/img/dashboard/fire.gif')}}" alt="">
+                          <img src="{{asset('custom/img/dashboard/importers.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{$ttlLocalSupplirs}}</h3>
+                          <p>Number Of Local Supplier</p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{route('lc-report')}}" target="_blank"  style="color: #ffffff">
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/lcPurchase.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{number_format($ttlLcPurchase,2)}}</h3>
+                          <p>LC Purchase <sub>($)</sub></p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{route('local-purchases.index')}}" target="_blank"  style="color: #ffffff">
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/products.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{number_format($ttlLocalPurchase,2)}}</h3>
+                          <p>Local Purchase <sub>(৳)</sub></p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.customer').'/customer-bill-collections'}}" target="_blank"  style="color: #ffffff">
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/customerDue.gif')}}" alt="">
                         </div>
                         <div class="inner">
                           <h3 style="font-size: 20px;">{{number_format($customerDue,2)}}</h3>
-                          <p>Customer Due</p>
+                          <p>Customer Due <sub>(৳)</sub></p>
                         </div>
                       </div>
                     </a>
                   </div>
+                  
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{route('sell-report')}}" target="_blank"  style="color: #ffffff">
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/sellProduct.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{number_format($ttlSell,2)}}</h3>
+                          <p>Total Sell <sub>(৳)</sub></p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.sm').'/stock-product'}}" target="_blank"  style="color: #ffffff">
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/mainStock.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{number_format($ttlMainStock,2)}}</h3>
+                          <p>Main Stock <sub>(quantity)</sub></p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <a href="{{$baseUrl.'/'.config('app.sm').'/branch-stock'}}" target="_blank"  style="color: #ffffff">
+                      <div class="small-box bg-white custom">
+                        <div class="inner">
+                          <img src="{{asset('custom/img/dashboard/branchStock.gif')}}" alt="">
+                        </div>
+                        <div class="inner">
+                          <h3 style="font-size: 20px;">{{number_format($ttlBranchStock,2)}}</h3>
+                          <p>Branch Stock <sub>(quantity)</sub></p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  
 
               </div>
             </div>

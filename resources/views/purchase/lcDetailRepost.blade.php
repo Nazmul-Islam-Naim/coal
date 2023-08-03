@@ -91,7 +91,7 @@
                       <td style="border: 1px solid #ddd; padding: 3px 3px">Shipment Date</td>
                       <td style="border: 1px solid #ddd; padding: 3px 3px">{{date('d-m-Y', strtotime($singledata->shipment_date))}}</td>
                       <td style="border: 1px solid #ddd; padding: 3px 3px">Border</td>
-                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{$singledata->lc_border_object->name}}</td>
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{$singledata->lc_border_object->name ?? ''}}</td>
                     </tr>
                     <tr> 
                       <td style="border: 1px solid #ddd; padding: 3px 3px">Commission</td>
@@ -101,10 +101,29 @@
                     </tr>
                     <tr> 
                       <td style="border: 1px solid #ddd; padding: 3px 3px">Exporter Name</td>
-                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{$singledata->lc_exporter_object->name}}</td>
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{$singledata->lc_exporter_object->name ?? ''}}</td>
                       <td style="border: 1px solid #ddd; padding: 3px 3px">Importer Name</td>
-                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{$singledata->lc_importer_object->name}}</td>
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{$singledata->lc_importer_object->name ?? ''}}</td>
                     </tr>
+                    @if ($singledata->lcFeesPayments->count()>0)
+                    <tr style="height: 40px"> 
+                      <td colspan="4" style="text-align:center"><h4>Others Fees Payment</h4></td>
+                    </tr>
+                    <tr> 
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">Date</td>
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">Fees Title</td>
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">Payment Method</td>
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">Amount</td>
+                    </tr>
+                    @foreach ($singledata->lcFeesPayments as $lcFeesPayment)
+                    <tr> 
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{dateFormateForView($lcFeesPayment->date)}}</td>
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{$lcFeesPayment->feesType->name ?? ''}}</td>
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{$lcFeesPayment->bank->bank_name ?? ''}}</td>
+                      <td style="border: 1px solid #ddd; padding: 3px 3px">{{number_format($lcFeesPayment->amount,2)}}</td>
+                    </tr>
+                    @endforeach
+                    @endif
                   </thead>
                 </table>
                 <table style="width: 100%; font-size: 12px; margin-top:15px" cellspacing="0" cellpadding="0"> 

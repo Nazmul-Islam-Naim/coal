@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\Filter\LcDateFilter;
 use Illuminate\Http\Request;
 use App\Models\lcInfo;
 use App\Models\BankAccount;
@@ -24,21 +25,17 @@ class LCFeesController extends Controller
      */
     public function index(Request $request)
     {
-        if(!empty($request->lcno)){
-            $check = lcInfo::where([['status', '1'],['lc_no', $request->lcno]])->count();
-            if($check==1){
-                $data['row']='1';
-                $data['single_data']= lcInfo::where([['status', '1'],['lc_no', $request->lcno]])->first();
-                $data['existsData']=LcFeesPayment::where('lc_no', $request->lcno)->get();
-                $data['allaccounts']= BankAccount::where('status', '1')->get();
-                return view('purchase.lcFees ', $data);
-            }else{
-                $data['row']='0';
-                $data['single_data']= 'Sorry ! LC not Found/Completed with provided LC number... Please input correct LC number.';
-                return view('purchase.lcFees',$data); 
-            }
+        if(!empty($request->lc_no)){
+            $data['row']='1';
+            $data['single_data']= lcInfo::where([['status', '1'],['lc_no', $request->lc_no]])->first();
+            $data['existsData']=LcFeesPayment::where('lc_no', $request->lc_no)->get();
+            $data['allaccounts']= BankAccount::where('status', '1')->get();
+            $data['lcInfos']= lcInfo::where('status', '1')->select('lc_no')->get();
+            $data['lc_no'] = $request->lc_no;
+            return view('purchase.lcFees ', $data);
         }else{
-            return view('purchase.lcFees'); 
+            $data['lcInfos']= lcInfo::where('status', '1')->select('lc_no')->get();
+            return view('purchase.lcFees',$data); 
         }
     }
 
@@ -258,6 +255,34 @@ class LCFeesController extends Controller
         }else{
             Session::flash('flash_message','Something Error Found !');
             return redirect()->back()->with('status_color','danger');
+        }
+    }
+
+    public function lcFeePaymentsReport(LcDateFilter $request){
+        if ($request->start_date != '' && $request->end_date != '' && $request->lc_no != '') {
+            $data['lcFeesPayments'] = LcFeesPayment::where('lc_no', $request->lc_no)
+                                    ->whereBetween('date',[$request->start_date, $request->end_date])
+                                    ->paginate(250);
+            $data['lcInfos'] = lcInfo::select('lc_no')->get();
+            $data['start_date'] = $request->start_date;
+            $data['end_date'] = $request->end_date;
+            return view('lc.lcFeePaymentsReport', $data);
+        } elseif ($request->start_date != '' && $request->end_date != '' && $request->lc_no == ''){
+            $data['lcFeesPayments'] = LcFeesPayment::whereBetween('date',[$request->start_date, $request->end_date])
+                                    ->paginate(250);
+                                    $data['lcInfos'] = lcInfo::select('lc_no')->get();
+            $data['start_date'] = $request->start_date;
+            $data['end_date'] = $request->end_date;
+            return view('lc.lcFeePaymentsReport', $data);
+        } elseif ($request->start_date == '' && $request->end_date == '' && $request->lc_no != ''){
+            $data['lcFeesPayments'] = LcFeesPayment::where('lc_no', $request->lc_no)
+                                    ->paginate(250);
+                                    $data['lcInfos'] = lcInfo::select('lc_no')->get();
+            return view('lc.lcFeePaymentsReport', $data);
+        } else {
+            $data['lcInfos'] = lcInfo::select('lc_no')->get();
+            $data['lcFeesPayments'] = LcFeesPayment::paginate(250);
+            return view('lc.lcFeePaymentsReport', $data);
         }
     }
 }

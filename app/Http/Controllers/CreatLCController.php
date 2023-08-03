@@ -62,31 +62,23 @@ class CreatLCController extends Controller
     }
     
     public function getLcReport(Request $request){
-        /*if ($request->start_date !="" && $request->end_date !="") {
-            $data['alldata']= lcInfo::where('status', '=', '2')->whereBetween('opening_date', [dateFormateForDB($request->start_date), dateFormateForDB($request->end_date)])->paginate(250);
-            return view('purchase.lcReport', $data); 
-        }else{
-            $data['alldata']= lcInfo::where('status', '=', '2')->paginate(250);
-            return view('purchase.lcReport', $data); 
-        }*/
-        
         if ($request->start_date !="" && $request->end_date !="" && $request->importer_id =="" && $request->exporter_id =="") {
-            $data['alldata']= lcInfo::where('status', '=', '2')->whereBetween('opening_date', [dateFormateForDB($request->start_date), dateFormateForDB($request->end_date)])->paginate(250);
+            $data['alldata']= lcInfo::whereBetween('opening_date', [dateFormateForDB($request->start_date), dateFormateForDB($request->end_date)])->paginate(250);
             return view('purchase.lcReport', $data); 
         }elseif ($request->start_date !="" && $request->end_date !="" && $request->importer_id !="" && $request->exporter_id !="") {
-            $data['alldata']= lcInfo::where('status', '=', '2')->whereBetween('opening_date', [dateFormateForDB($request->start_date), dateFormateForDB($request->end_date)])->where([['importer_id',$request->importer_id],['exporter_id',$request->exporter_id]])->paginate(250);
+            $data['alldata']= lcInfo::whereBetween('opening_date', [dateFormateForDB($request->start_date), dateFormateForDB($request->end_date)])->where([['importer_id',$request->importer_id],['exporter_id',$request->exporter_id]])->paginate(250);
             return view('purchase.lcReport', $data); 
         }elseif ($request->start_date =="" && $request->end_date =="" && $request->importer_id !="" && $request->exporter_id !="") {
-            $data['alldata']= lcInfo::where('status', '=', '2')->where([['importer_id',$request->importer_id],['exporter_id',$request->exporter_id]])->paginate(250);
+            $data['alldata']= lcInfo::where([['importer_id',$request->importer_id],['exporter_id',$request->exporter_id]])->paginate(250);
             return view('purchase.lcReport', $data); 
         }elseif ($request->start_date =="" && $request->end_date =="" && $request->importer_id !="" && $request->exporter_id =="") {
-            $data['alldata']= lcInfo::where('status', '=', '2')->where('importer_id',$request->importer_id)->paginate(250);
+            $data['alldata']= lcInfo::where('importer_id',$request->importer_id)->paginate(250);
             return view('purchase.lcReport', $data); 
         }elseif ($request->start_date =="" && $request->end_date =="" && $request->importer_id =="" && $request->exporter_id !="") {
-            $data['alldata']= lcInfo::where('status', '=', '2')->where('exporter_id',$request->exporter_id)->paginate(250);
+            $data['alldata']= lcInfo::where('exporter_id',$request->exporter_id)->paginate(250);
             return view('purchase.lcReport', $data); 
         }else{
-            $data['alldata']= lcInfo::where('status', '=', '2')->paginate(250);
+            $data['alldata']= lcInfo::paginate(250);
             return view('purchase.lcReport', $data); 
         }
     }

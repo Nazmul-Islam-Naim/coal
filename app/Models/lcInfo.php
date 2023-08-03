@@ -31,4 +31,8 @@ class lcInfo extends Model
     public function lcProductStatus(){
         return $this->hasMany(LcProductStatus::class);
     }
+
+    public function lcFeesPayments(){
+        return $this->hasMany(LcFeesPayment::class, 'lc_id');
+    }
 }
