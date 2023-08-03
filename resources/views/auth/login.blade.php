@@ -7,19 +7,19 @@
 <!-- Tell the browser to be responsive to screen width -->
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <!-- Bootstrap 3.3.7 -->
-{!!Html::style('public/custom/css/bootstrap.min.css')!!}
+{!!Html::style('custom/css/bootstrap.min.css')!!}
 <!-- Font Awesome -->
-{!!Html::style('public/custom/css_icon/font-awesome/css/font-awesome.min.css')!!}
+{!!Html::style('custom/css_icon/font-awesome/css/font-awesome.min.css')!!}
 <!-- Ionicons -->
-{!!Html::style('public/custom/css_icon/Ionicons/css/ionicons.min.css')!!}
+{!!Html::style('custom/css_icon/Ionicons/css/ionicons.min.css')!!}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900'>
 <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Montserrat:400,700'>
-{!!Html::style('public/custom/css/login.css')!!}
+{!!Html::style('custom/css/login.css')!!}
 <!-- jQuery 3 -->
-{!!Html::script('public/custom/js/plugins/jquery/dist/jquery.min.js')!!}
+{!!Html::script('custom/js/plugins/jquery/dist/jquery.min.js')!!}
 <!-- Bootstrap 3.3.7 -->
-{!!Html::script('public/custom/js/plugins/bootstrap/dist/js/bootstrap.min.js')!!}
+{!!Html::script('custom/js/plugins/bootstrap/dist/js/bootstrap.min.js')!!}
 </head>
 <body>
 <div class="container">

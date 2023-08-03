@@ -29,7 +29,7 @@
           <h3 class="box-title"> <i class="fa fa-plus-circle"></i> {{$btn}} LC</h3>
           <div class="form-inline pull-right">
             <div class="input-group">
-              <!--<div style="right:0;margin-right:20px;" id="print_icon"><a onclick="printReport();" href="javascript:0;"><img class="img-thumbnail" style="width:40px;" src='{{asset("public/custom/img/print.png")}}'></a></div>-->
+              <!--<div style="right:0;margin-right:20px;" id="print_icon"><a onclick="printReport();" href="javascript:0;"><img class="img-thumbnail" style="width:40px;" src='{{asset("custom/img/print.png")}}'></a></div>-->
                 <a href="{{url::to('/purchase/lc')}}" class="btn btn-warning btn-sm"><i class="fa fa-list"></i> {{ __('messages.LC_list') }}</a>
             </div>
           </div>

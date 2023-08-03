@@ -40,7 +40,7 @@
           <div class="row">
             <div class="col-md-12"> 
               <div class="table-responsive">
-                <table class="table borderless">
+                <table class="table borderless">            
                   <tbody>
                     <tr>
                       <td style="text-align: center;">

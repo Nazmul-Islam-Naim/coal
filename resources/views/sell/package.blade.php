@@ -107,7 +107,7 @@
                       <td> 
                         <?php
                           if (!empty($data->image)) {
-                            $picture = "public/storage/app/public/uploads/product_package/".$data->image;
+                            $picture = "storage/app/uploads/product_package/".$data->image;
                           }else{
                             $picture = "public/custom/img/no_img.png";
                           }
