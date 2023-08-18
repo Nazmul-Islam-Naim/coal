@@ -13,53 +13,15 @@
 <section class="content">
   @include('common.message')
   <div class="row">
-    @if(empty($single_data))
-      {!! Form::open(array('route' =>['user.store'],'method'=>'POST')) !!}
-      <?php $btn_name = "Save"; ?>
-    @else
-      {{  Form::open(array('route' => ['user.update',$single_data->id], 'method' => 'PUT', 'files' => true))  }}
-      <?php $btn_name = "Update"; ?>
-    @endif
-    <div class="col-md-4">
-      <div class="box box-primary">
-        <div class="box-header with-border">
-          <h3 class="box-title"> <i class="fa fa-plus-circle"></i> {{ __('messages.add') }} {{ __('messages.user') }}</h3>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group"> 
-                <label>{{ __('messages.name') }}</label>
-                <input type="text" name="name" class="form-control" value="{{(!empty($single_data->name))?$single_data->name:''}}" autocomplete="off" required>
-              </div>
-              <div class="form-group"> 
-                <label>{{ __('messages.email') }}</label>
-                <input type="email" name="email" class="form-control" value="{{(!empty($single_data->email))?$single_data->email:''}}" autocomplete="off" required>
-              </div>
-              <div class="form-group"> 
-                <label>{{ __('messages.password') }} @if(!empty($single_data))<span style="color: red">(Keep Blank if don't want change)</span>@endif</label>
-                <input type="text" name="password" class="form-control" value="">
-              </div>
-              <div class="form-group">
-                @if(Auth::user()->type==1)
-                <button type="submit" class="btn btn-success" style="width: 100%"><i class="fa fa-floppy-o"></i> <b>{{$btn_name}} Information</b></button>
-                @endif
-              </div>
-            </div>
-          </div>
-          <!-- /.row -->
-        </div>
-        <div class="box-footer"></div>
-      </div>
-      <!-- /.box -->
-    </div>
-    {!! Form::close() !!}
 
-    <div class="col-md-8">
+    <div class="col-md-12">
       <div class="box box-primary">
         <div class="box-header with-border">
           <h3 class="box-title"> <i class="fa fa-list-alt"></i> {{ __('messages.user') }} {{ __('messages.list') }}</h3>
+          <div class="form-inline pull-right">
+            <div class="input-group">
+              <a href="{{route('user.create')}}" class="btn btn-sm btn-primary float-right"> <i class="fa fa-plus-circle"></i> Add User</a>
+            </div>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -71,27 +33,25 @@
                       <th>{{ __('messages.SL') }}</th>
                       <th>{{ __('messages.name') }}</th>
                       <th>{{ __('messages.email') }}</th>
-                      <th>{{ __('messages.password') }}</th>
+                      <th>{{ __('messages.status') }}</th>
                       <th width="15%">{{ __('messages.action') }}</th>
                     </tr>
                   </thead>
                   <tbody> 
-                    <?php                           
-                      $number = 1;
-                      $numElementsPerPage = 15; // How many elements per page
-                      $pageNumber = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                      $currentNumber = ($pageNumber - 1) * $numElementsPerPage + $number;
-                      $rowCount = 0;
-                    ?>
-                    @foreach($alldata as $data)
-                      <?php $rowCount++; ?>
+                    @foreach($alldata as $key => $data)
                     <tr> 
                       <td>
-                        <label class="label label-success">{{$currentNumber++}}</label>
+                        <label class="label label-success">{{$key+1}}</label>
                       </td>
                       <td>{{$data->name}}</td>
                       <td>{{$data->email}}</td>
-                      <td>******</td>
+                      <td>
+                        @if ($data->status == 1)
+                            <span class="badge bg-primary badge-sm">Enable</span>
+                        @else
+                            <span class="badge bg-primary badge-sm">Disable</span>
+                        @endif
+                      </td>
                       <td>
                         <div class="form-inline">
                           <div class="input-group">
@@ -103,7 +63,7 @@
                       </td>
                     </tr>
                     @endforeach
-                    @if($rowCount==0)
+                    @if($alldata->count()==0)
                       <tr>
                         <td colspan="5" align="center">
                           <h4 style="color: #ccc">No Data Found . . .</h4>
@@ -112,9 +72,6 @@
                     @endif
                   </tbody>
                 </table>
-                <div class="col-md-12" align="right">
-                  {{ $alldata->render() }}
-                </div>
               </div>
             </div>
           </div>

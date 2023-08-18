@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['alldata']= User::where('type', '!=', '1')->paginate(10);
+        $data['alldata']= User::where('type', '!=', '1')->get();
         return view('users.index', $data);
     }
 
@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -46,32 +46,23 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            'type_id' => 'required'
         ]);
         if ($validator->fails()) {
             Session::flash('flash_message', $validator->errors());
             return redirect()->back()->with('status_color','warning');
         }
-
-        DB::beginTransaction();
         try{
-            $bug=0;
-            $insert= User::create([
+            User::create([
                 'name' => $request->name,
                 'password' => Hash::make($request->password),
                 'password_hint' => $request->password,
                 'email'    => $request->email,
-                'type'    => '2',
+                'type'    => $request->type_id,
             ]);
-            DB::commit();
-        }catch(\Exception $e){
-            $bug=$e->errorInfo[1];
-            DB::rollback();
-        }
-
-        if($bug==0){
             Session::flash('flash_message','User Successfully Added !');
-            return redirect()->back()->with('status_color','success');
-        }else{
+            return redirect()->route('user.index')->with('status_color','success');
+        }catch(\Exception $e){
             Session::flash('flash_message','Something Error Found !');
             return redirect()->back()->with('status_color','danger');
         }
@@ -97,8 +88,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $data['single_data'] = User::findOrFail($id);
-        $data['alldata']= User::where('type', '!=', '1')->paginate(10);
-        return view('users.index', $data);
+        return view('users.edit', $data);
     }
 
     /**
@@ -114,6 +104,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|unique:users,email,'.$data->id,
+            'type'    => $request->type_id,
         ]);
         if ($validator->fails()) {
             Session::flash('flash_message', $validator->errors());
@@ -130,16 +121,10 @@ class UserController extends Controller
         }
 
         try{
-            $bug=0;
             $data->update($input);
-        }catch(\Exception $e){
-            $bug=$e->errorInfo[1];
-        }
-
-        if($bug==0){
             Session::flash('flash_message','User Successfully Updated !');
-            return redirect()->back()->with('status_color','warning');
-        }else{
+            return redirect()->route('user.index')->with('status_color','warning');
+        }catch(\Exception $e){
             Session::flash('flash_message','Something Error Found !');
             return redirect()->back()->with('status_color','danger');
         }
@@ -154,5 +139,37 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * change password form
+     */
+    public function changePassword(){
+        return view('users.changePassword');
+    }
+
+    /**
+     * update password
+     */
+    public function updatePassword(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'password' => ['required', 'confirmed'],
+        ]);
+        if ($validator->fails()) {
+            Session::flash('flash_message', $validator->errors());
+            return redirect()->back()->with('status_color','warning');
+        }
+        $data=User::findOrFail($id);
+        $input = $request->all();
+        $input['password'] = Hash::make($request->password);
+        $input['password_hint'] = $request->password;
+        try{
+            $data->update($input);
+            Session::flash('flash_message','Password Updated !');
+            return redirect()->back()->with('status_color','success');
+        }catch(\Exception $e){
+            Session::flash('flash_message','Something Error Found !');
+            return redirect()->back()->with('status_color','danger');
+        }
     }
 }

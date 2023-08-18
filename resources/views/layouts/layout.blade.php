@@ -346,6 +346,21 @@ input[type=number] {
             </li>
           </ul>
         </li>
+        @if(auth()->user()->type == 1)
+        <li class="treeview {{(
+          $url==config('app.user').'/user' || $url==config('app.user').'/user/create') ? 'active':''}}">
+           <a href="#"> <i class="fa fa-user-o"></i> <span>User Management</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li class="{{($url==config('app.user').'/user')?'active':''}}"><a href="{{$baseUrl.'/'.config('app.user').'/user'}}">
+              <i class="fa fa-angle-double-right"></i>Users</a>
+            </li>
+          </ul>
+        </li>
+        @endif
+
+        <li>
+           <a href="{{$baseUrl.'/'.config('app.user').'/changePassword'}}"> <i class="fa fa-lock"></i> <span>Change Password</a>
+        </li>
         
         <!--<li class="treeview {{($url==config('app.return').'/return-form' || $url==config('app.return').'/return-list-from-customer' || $url==config('app.return').'/return-list-to-supplier' || $url==config('app.return').'/wastage-list') ? 'active':''}}"> <a href="#"> <i class="fa fa-retweet"></i> <span>{{ __('messages.product_return') }}</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
@@ -432,89 +447,7 @@ input[type=number] {
 </div>
 <!-- ./wrapper -->
 
-<div class="modal fade" id="profile_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content" style="width: 450px; margin: 0 auto;">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-user-circle"></i> Update Profile Information</h4>
-      </div>
-      <div class="modal-body">
-        <h4 align="center" id="notifyMsg"></h4>
-        {{Form::hidden('id',Auth::user()->id)}}
-        <div class="form-group row">
-          {{Form::label('name', 'Name:', array('class' => 'col-md-4 control-label'))}}
-          <div class="col-md-8">
-              <input type="text" class="form-control" id="name" value="{{  Auth::user()->name  }}" name="name" placeholder="Name">
-          </div>
-        </div>
-        <div class="form-group row">
-          {{Form::label('oldPassword', 'Old Password:', array('class' => 'col-md-4 control-label'))}}
-          <div class="col-md-8">
-              <input type="password" class="form-control" id="oldPassword" value="" name="exist_password" placeholder="Given old password">
-              <input type="hidden" class="form-control" id="existPass" value="{{Auth::user()->password}}" name="old_password" placeholder="Enter old password">
-          </div>
-        </div>
-        <div class="form-group row">
-          {{Form::label('newPass', 'New Password:', array('class' => 'col-md-4 control-label'))}}
-          <div class="col-md-8">
-              <input type="password" class="form-control" id="newPass" value="" name="password" placeholder="Enter new password">
-          </div>
-        </div>
-        <div class="form-group row">
-          {{Form::label('confirmPass', 'Confirm Password:', array('class' => 'col-md-4 control-label'))}}
-          <div class="col-md-8">
-              <input type="password" class="form-control" id="confirmPass" value="" name="confirm_password" placeholder="Enter confirm password">
-              <span id="confirmMsg"></span>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" id="btnSave" value="add">Update</button>
-      </div>
-    </div>
-  </div>
-</div>
-
   <script type="text/javascript">
-    $('#confirmPass').on('keyup', function () {
-      if ($('#newPass').val() == $('#confirmPass').val()) {
-        $('#confirmMsg').html('Password Matched !').css('color', 'green');
-      } else 
-        $('#confirmMsg').html('Password Do not Matched !').css('color', 'red');
-    });
-
-    $('#btnSave').on('click',function(){
-        if ($('#newPass').val() == $('#confirmPass').val()){
-          $.ajax({
-            headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              },
-            method: "POST",
-            url: "{{URL::to('update-profile')}}",
-            data: {
-              'id': $('input[name=id]').val(),
-              'name': $('input[name=name]').val(),
-              'exist_password': $('input[name=exist_password]').val(),
-              'old_password': $('input[name=old_password]').val(),
-              'password': $('input[name=password]').val(),
-              'confirm_password': $('input[name=confirm_password]').val(),
-            },
-            dataType: "json",
-            success: function(data){
-              $('#notifyMsg').html(data[0]).css('color',data[1]);
-              $('#notifyMsg').delay(500).fadeIn('normal', function() {
-                $(this).delay(2000).fadeOut();
-             });
-            },
-            error: function(data){
-            }
-          });
-        }else{
-          $('#confirmMsg').html('Password Do not Matched!!').css('color', 'red');
-          return false;
-        }
-    });
 
     $(document).ready(function(){
       $(".select2").select2({});

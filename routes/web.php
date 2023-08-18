@@ -267,6 +267,8 @@ Route::group(['middleware'=>['auth']],function(){
     // ******* User *********//
     Route::prefix(config('app.user'))->group(function () {
         Route::resource('user', 'UserController');
+        Route::get('changePassword', 'UserController@changePassword')->name('changePassword');
+        Route::put('changePassword/update/{id}', 'UserController@updatePassword')->name('changePassword.Update');
     });
 
     // ****** Return Product ***********//
